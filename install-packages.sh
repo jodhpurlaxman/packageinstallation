@@ -25,7 +25,7 @@ cat << EOT >  /etc/apache2/conf-available/php-fpm.conf
         <Directory /usr/lib/cgi-bin>
                 Require all granted
         </Directory>
-</IfModule>"
+</IfModule>
 EOT
 
 sudo a2enmod "proxy proxy_fcgi setenvif actions alias auth_basic env expires headers http2 mime ssl rewrite request mpm_itk"
@@ -112,11 +112,11 @@ $TTL    900
 ; PTR Records
 101   IN      PTR     ns1.            ; 127.0.0.1
 101   IN      PTR     ns2.             ; 127.0.0.1
-EOL
+EOT
 
 service	bind9 restart
 #=========================
-cat << EOT > /etc/hosts
+cat << EOT >> /etc/hosts
 127.0.0.1 ns1.qualdev.in ns2.qualdev.in ns1 ns2
 EOT
 #=========================
