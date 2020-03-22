@@ -71,12 +71,10 @@ options {
 EOT
 #============
 mkdir /etc/bind/zones
-touch /etc/bind/zones/qualdev.in
-touch /etc/bind/zones/rev.qualdev.in
 wget https://raw.githubusercontent.com/jodhpurlaxman/packageinstallation/master/qualdev.in
 wget https://raw.githubusercontent.com/jodhpurlaxman/packageinstallation/master/rev.qualdev.in
 mv qualdev.in /etc/bind/zones/qualdev.in
-mv rev.qualdev.in /etc/bind/zones/qualdev.in
+mv rev.qualdev.in /etc/bind/zones/rev.qualdev.in
 service	bind9 restart
 #=========================
 cat << EOT >> /etc/hosts
