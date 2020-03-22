@@ -121,9 +121,7 @@ cat << EOT > /etc/hosts
 EOT
 #=========================
 cat << EOT > /etc/resolvconf/resolv.conf.d/head
-nameserver 127.0.0.53
-nameserver 8.8.4.4
-nameserver 8.8.8.8
+nameserver 127.0.0.1
 EOT
 sudo service resolvconf restart
 #=======================================
