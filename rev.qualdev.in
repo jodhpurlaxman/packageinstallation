@@ -1,0 +1,14 @@
+$TTL  60;
+@       IN      SOA     ns1.qualdev.in. postmaster.qualdev.in. (
+                                2       ;<serial-number>
+                              60       ;<time-to-refresh>
+                              60       ;<time-to-retry>
+                           604800       ;<time-to-expire>
+                              60)      ;<minimum-TTL>
+; name servers
+      IN      NS      ns1.qualdev.in.
+      IN      NS      ns1.qualdev.in.
+
+; PTR Records
+101   IN      PTR     ns1.            ; 127.0.0.1
+101   IN      PTR     ns2.             ; 127.0.0.1
