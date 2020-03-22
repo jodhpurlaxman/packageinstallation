@@ -56,7 +56,6 @@ zone "0.127.in-addr.arpa" {
         allow-update { none; };
  };
 EOT
-
 cat << EOT > /etc/bind/named.conf.options
 options {
         directory "/var/cache/bind";
@@ -74,46 +73,10 @@ EOT
 mkdir /etc/bind/zones
 touch /etc/bind/zones/qualdev.in
 touch /etc/bind/zones/rev.qualdev.in
-cat << EOT >   /etc/bind/zones/qualdev.in
-$TTL 86400;
-$ORIGIN qualdev.in.
-@ 1D IN  SOA     ns1.qualdev.in. postmaster.qualdev.in. (
-        1  ;Serial
-        600        ;Refresh
-        600        ;Retry
-        604800      ;Expire
-        900       ;Minimum TTL
-)
-        IN      NS      ns1.qualdev.in.
-        IN      NS      ns2.qualdev.in.
-;Name Server
-ns2     IN  A      127.0.0.1
-ns1     IN  A      127.0.0.1
-;address to name mapping
-@                IN A      127.0.0.1
-;Mail Server
-@               IN  MX          0       ns1
-;Aliashed Servers
-www             IN  A           127.0.0.1
-EOT
-#=========================
-cat << EOT > /etc/bind/zones/rev.qualdev.in
-$TTL    900
-@       IN      SOA     ns1.qualdev.in. postmaster.qualdev.in. (
-                                2       ;<serial-number>
-                              900       ;<time-to-refresh>
-                              900       ;<time-to-retry>
-                           604800       ;<time-to-expire>
-                              900)      ;<minimum-TTL>
-; name servers
-      IN      NS      ns1.qualdev.in.
-      IN      NS      ns1.qualdev.in.
-
-; PTR Records
-101   IN      PTR     ns1.            ; 127.0.0.1
-101   IN      PTR     ns2.             ; 127.0.0.1
-EOT
-
+wget https://raw.githubusercontent.com/jodhpurlaxman/packageinstallation/master/qualdev.in
+wget https://raw.githubusercontent.com/jodhpurlaxman/packageinstallation/master/rev.qualdev.in
+mv qualdev.in /etc/bind/zones/qualdev.in
+mv rev.qualdev.in /etc/bind/zones/qualdev.in
 service	bind9 restart
 #=========================
 cat << EOT >> /etc/hosts
