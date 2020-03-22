@@ -87,5 +87,26 @@ EOT
 sudo service resolvconf restart
 #=======================================
 dig @127.0.0.1
-dig qualdev.in A 
+ok  "dig qualdev.in A"
+dig qualdev.in A
+ok  "updating php.ini in all PHPFPM version"
+wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php5.6.conf
+wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php7.0.conf
+wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php7.1.conf
+wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php7.2.conf
+wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php7.3.conf
+wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php7.4.conf
+wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php-fpm.conf
+
+mv php5.6.conf /etc/php/5.6/fpm/php.ini
+mv php7.0.conf /etc/php/7.0/fpm/php.ini
+mv php7.1.conf /etc/php/7.1/fpm/php.ini
+mv php7.2.conf /etc/php/7.2/fpm/php.ini
+mv php7.3.conf /etc/php/7.3/fpm/php.ini
+mv php7.4.conf /etc/php/7.4/fpm/php.ini
+ok  "updating restarting PHP-FPM ALL VERSIONS"
+sudo service php5.6-fpm restart && sudo service php7.0-fpm restart && sudo service php7.1-fpm restart && sudo service php7.2-fpm restart && sudo service php7.3-fpm restart && sudo service php7.3-fpm restart && sudo service apache2 restart
+
+
+
 
