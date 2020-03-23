@@ -1,6 +1,6 @@
 #!/bin/bash
 ok() { echo -e '\e[32m'$1'\e[m'; } # Green
-
+sudo apt update
 sudo apt-get install -y software-properties-common curl gcc g++ make
 sudo add-apt-repository ppa:ondrej/apache2 -y
 sudo add-apt-repository ppa:ondrej/php -y
@@ -75,6 +75,7 @@ zone "qualdev.in" {
         file "/etc/bind/zones/qualdev.in";
         allow-update { none; };
  };
+EOT
 #============
 mkdir /etc/bind/zones
 #wget https://raw.githubusercontent.com/jodhpurlaxman/packageinstallation/master/qualdev.in
@@ -107,8 +108,8 @@ ok  "updating php.ini in all PHPFPM version"
 #wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/openssl.zip
 unzip openssl.zip
 mkdir /etc/ssl/selfsigned
-cp ca-bundle.pem /etc/ssl/selfsigned/
-
+cp openssl/ca-bundle.pem /etc/ssl/selfsigned/ca-bundle.pem
+mv test.net.conf /etc/apache2/sites-available/test.net.conf
 mv php5.6.conf /etc/php/5.6/fpm/php.ini
 mv php7.0.conf /etc/php/7.0/fpm/php.ini
 mv php7.1.conf /etc/php/7.1/fpm/php.ini
@@ -116,12 +117,28 @@ mv php7.2.conf /etc/php/7.2/fpm/php.ini
 mv php7.3.conf /etc/php/7.3/fpm/php.ini
 mv php7.4.conf /etc/php/7.4/fpm/php.ini
 mv php-fpm7.4.conf /etc/php/7.4/fpm/pool.d/www.conf
-
+ok "Rewrite setting in apache.conf"
+sed -i '/#<Directory/i \
+<Directory /home/*/public_html/> \
+Options Indexes FollowSymLinks \
+AllowOverride ALL \
+Require all granted \
+</Directory>' /etc/apache2/apache2.conf
 
 ok  "updating restarting PHP-FPM ALL VERSIONS"
 sudo service php5.6-fpm restart && sudo service php7.0-fpm restart && sudo service php7.1-fpm restart && sudo service php7.2-fpm restart && sudo service php7.3-fpm restart && sudo service php7.3-fpm restart && sudo service apache2 restart
-sed -i 's/#   Port 22/Port 22/g' /etc/ssh/sshd_config
-systemctl enable apache2 && systemctl enable php5.6-fpm && systemctl enable php7.0-fpm &&  systemctl enable php7.1-fpm &&  systemctl enable php7.2-fpm && systemctl enable php7.3-fpm && systemctl enable php7.3-fpm && systemctl enable mysql && systemctl enable bind9
+ok  "Enabling SSH ON SERVER"
+sed -i 's/#   Port 22/Port 22/g' /etc/ssh/ssh_config
+
+systemctl enable apache2 && systemctl enable php5.6-fpm && systemctl enable php7.0-fpm &&  systemctl enable php7.1-fpm &&  systemctl enable php7.2-fpm && systemctl enable php7.3-fpm && systemctl enable php7.3-fpm && systemctl enable mysql && systemctl enable bind9 && systemctl enable ssh && systemctl restart ssh
+
+
+  
+#<Directory /srv/>
+#       Options Indexes FollowSymLinks
+#       AllowOverride None
+#       Require all granted
+#</Directory>
 
 
 
