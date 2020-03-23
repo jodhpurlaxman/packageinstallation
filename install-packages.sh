@@ -30,7 +30,7 @@ EOT
 
 sudo a2enmod "proxy proxy_fcgi setenvif actions alias auth_basic env expires headers http2 mime ssl rewrite request mpm_itk"
 sudo a2enconf  "php-fpm php5.6-fpm php7.0-fpm php7.1-fpm  php7.2-fpm php7.3-fpm phpmyadmin"
-sudo service php5.6-fpm restart && sudo service php7.0-fpm restart && sudo service php7.1-fpm restart && sudo service php7.2-fpm restart && sudo service php7.3-fpm restart && sudo service php7.3-fpm restart && sudo service apache2 restart
+
 
 
 #==================================*MySql User database*===========================================
@@ -69,12 +69,19 @@ options {
         listen-on-v6 { any; };
 };
 EOT
+cat << EOT >> /etc/bind/named.conf.local
+zone "qualdev.in" {
+        type master;
+        file "/etc/bind/zones/qualdev.in";
+        allow-update { none; };
+ };
 #============
 mkdir /etc/bind/zones
 #wget https://raw.githubusercontent.com/jodhpurlaxman/packageinstallation/master/qualdev.in
 #wget https://raw.githubusercontent.com/jodhpurlaxman/packageinstallation/master/rev.qualdev.in
 mv qualdev.in /etc/bind/zones/qualdev.in
 mv rev.qualdev.in /etc/bind/zones/rev.qualdev.in
+mv test.net /etc/bind/zones/test.net
 service	bind9 restart
 #=========================
 cat << EOT >> /etc/hosts
@@ -100,6 +107,7 @@ ok  "updating php.ini in all PHPFPM version"
 #wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/openssl.zip
 unzip openssl.zip
 mkdir /etc/ssl/selfsigned
+cp ca-bundle.pem /etc/ssl/selfsigned/
 
 mv php5.6.conf /etc/php/5.6/fpm/php.ini
 mv php7.0.conf /etc/php/7.0/fpm/php.ini
@@ -109,8 +117,12 @@ mv php7.3.conf /etc/php/7.3/fpm/php.ini
 mv php7.4.conf /etc/php/7.4/fpm/php.ini
 mv php-fpm7.4.conf /etc/php/7.4/fpm/pool.d/www.conf
 
+
 ok  "updating restarting PHP-FPM ALL VERSIONS"
 sudo service php5.6-fpm restart && sudo service php7.0-fpm restart && sudo service php7.1-fpm restart && sudo service php7.2-fpm restart && sudo service php7.3-fpm restart && sudo service php7.3-fpm restart && sudo service apache2 restart
+sed -i 's/#   Port 22/Port 22/g' /etc/ssh/sshd_config
+systemctl enable apache2 && systemctl enable php5.6-fpm && systemctl enable php7.0-fpm &&  systemctl enable php7.1-fpm &&  systemctl enable php7.2-fpm && systemctl enable php7.3-fpm && systemctl enable php7.3-fpm && systemctl enable mysql && systemctl enable bind9
+
 
 
 
