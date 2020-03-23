@@ -8,12 +8,12 @@ sudo apt install
 curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 sudo apt update
 sudo apt-get install -y git filezilla cifs-utils unzip bind9 resolvconf openssh-server composer nodejs git build-essential libtool autoconf openssl mysql-server-5.7 apache2 libapache2-mpm-itk php-pear php5.6 php7.0 php7.1 php7.2 php7.3 php7.4 php5.6-fpm php7.0-fpm php7.1-fpm php7.2-fpm php7.3-fpm php7.4-fpm \
-php5.6-{dev,curl,common,xml,bcmath,bz2,intl,gd,mbstring,mysql,zip,json} \
-php7.0-{dev,curl,common,xml,bcmath,bz2,intl,gd,mbstring,mysql,zip,json} \
-php7.1-{dev,curl,common,xml,bcmath,bz2,intl,gd,mbstring,mysql,zip,json} \
-php7.2-{dev,curl,common,xml,bcmath,bz2,intl,gd,mbstring,mysql,zip,json} \
-php7.3-{dev,curl,common,xml,bcmath,bz2,intl,gd,mbstring,mysql,zip,json} \
-php7.4-{dev,curl,common,xml,bcmath,bz2,intl,gd,mbstring,mysql,zip,json} \
+php5.6-{curl,common,xml,bcmath,bz2,intl,gd,mbstring,mysql,zip,json} \
+php7.0-{curl,common,xml,bcmath,bz2,intl,gd,mbstring,mysql,zip,json} \
+php7.1-{curl,common,xml,bcmath,bz2,intl,gd,mbstring,mysql,zip,json} \
+php7.2-{curl,common,xml,bcmath,bz2,intl,gd,mbstring,mysql,zip,json} \
+php7.3-{curl,common,xml,bcmath,bz2,intl,gd,mbstring,mysql,zip,json} \
+php7.4-{curl,common,xml,bcmath,bz2,intl,gd,mbstring,mysql,zip,json} \
 phpmyadmin
 #===================================================PHPFPM========================================================
 cat << EOT >  /etc/apache2/conf-available/php-fpm.conf
@@ -90,13 +90,16 @@ dig @127.0.0.1
 ok  "dig qualdev.in A"
 dig qualdev.in A
 ok  "updating php.ini in all PHPFPM version"
-wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php5.6.conf
-wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php7.0.conf
-wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php7.1.conf
-wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php7.2.conf
-wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php7.3.conf
-wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php7.4.conf
-wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php-fpm.conf
+#wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php5.6.conf
+#wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php7.0.conf
+#wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php7.1.conf
+#wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php7.2.conf
+#wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php7.3.conf
+#wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php7.4.conf
+#wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/php-fpm.conf
+#wget https://github.com/jodhpurlaxman/packageinstallation/blob/master/openssl.zip
+unzip openssl.zip
+mkdir /etc/ssl/selfsigned
 
 mv php5.6.conf /etc/php/5.6/fpm/php.ini
 mv php7.0.conf /etc/php/7.0/fpm/php.ini
@@ -104,8 +107,14 @@ mv php7.1.conf /etc/php/7.1/fpm/php.ini
 mv php7.2.conf /etc/php/7.2/fpm/php.ini
 mv php7.3.conf /etc/php/7.3/fpm/php.ini
 mv php7.4.conf /etc/php/7.4/fpm/php.ini
+
 ok  "updating restarting PHP-FPM ALL VERSIONS"
 sudo service php5.6-fpm restart && sudo service php7.0-fpm restart && sudo service php7.1-fpm restart && sudo service php7.2-fpm restart && sudo service php7.3-fpm restart && sudo service php7.3-fpm restart && sudo service apache2 restart
+
+
+
+
+
 
 
 
