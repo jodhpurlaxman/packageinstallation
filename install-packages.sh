@@ -124,21 +124,13 @@ Options Indexes FollowSymLinks \
 AllowOverride ALL \
 Require all granted \
 </Directory>' /etc/apache2/apache2.conf
-
+mkdir -p /home/it/public_html/test.net/public
 ok  "updating restarting PHP-FPM ALL VERSIONS"
 sudo service php5.6-fpm restart && sudo service php7.0-fpm restart && sudo service php7.1-fpm restart && sudo service php7.2-fpm restart && sudo service php7.3-fpm restart && sudo service php7.3-fpm restart && sudo service apache2 restart
 ok  "Enabling SSH ON SERVER"
 sed -i 's/#   Port 22/Port 22/g' /etc/ssh/ssh_config
 
 systemctl enable apache2 && systemctl enable php5.6-fpm && systemctl enable php7.0-fpm &&  systemctl enable php7.1-fpm &&  systemctl enable php7.2-fpm && systemctl enable php7.3-fpm && systemctl enable php7.3-fpm && systemctl enable mysql && systemctl enable bind9 && systemctl enable ssh && systemctl restart ssh
-
-
-  
-#<Directory /srv/>
-#       Options Indexes FollowSymLinks
-#       AllowOverride None
-#       Require all granted
-#</Directory>
 
 
 
