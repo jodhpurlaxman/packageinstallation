@@ -71,8 +71,8 @@ options {
 EOT
 #============
 mkdir /etc/bind/zones
-wget https://raw.githubusercontent.com/jodhpurlaxman/packageinstallation/master/qualdev.in
-wget https://raw.githubusercontent.com/jodhpurlaxman/packageinstallation/master/rev.qualdev.in
+#wget https://raw.githubusercontent.com/jodhpurlaxman/packageinstallation/master/qualdev.in
+#wget https://raw.githubusercontent.com/jodhpurlaxman/packageinstallation/master/rev.qualdev.in
 mv qualdev.in /etc/bind/zones/qualdev.in
 mv rev.qualdev.in /etc/bind/zones/rev.qualdev.in
 service	bind9 restart
@@ -107,9 +107,14 @@ mv php7.1.conf /etc/php/7.1/fpm/php.ini
 mv php7.2.conf /etc/php/7.2/fpm/php.ini
 mv php7.3.conf /etc/php/7.3/fpm/php.ini
 mv php7.4.conf /etc/php/7.4/fpm/php.ini
+mv php-fpm7.4.conf /etc/php/7.4/fpm/pool.d/www.conf
 
 ok  "updating restarting PHP-FPM ALL VERSIONS"
 sudo service php5.6-fpm restart && sudo service php7.0-fpm restart && sudo service php7.1-fpm restart && sudo service php7.2-fpm restart && sudo service php7.3-fpm restart && sudo service php7.3-fpm restart && sudo service apache2 restart
+
+
+
+
 
 
 
