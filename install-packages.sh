@@ -1,13 +1,18 @@
 #!/bin/bash
 ok() { echo -e '\e[32m'$1'\e[m'; } # Green
-sudo apt update
-sudo apt-get install -y software-properties-common curl gcc g++ make
-sudo add-apt-repository ppa:ondrej/apache2 -y
-sudo add-apt-repository ppa:ondrej/php -y
-sudo apt install 
-curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-sudo apt update
-sudo apt-get install -y git filezilla cifs-utils unzip bind9 resolvconf openssh-server composer nodejs git build-essential libtool autoconf openssl mysql-server-5.7 apache2 libapache2-mpm-itk php-pear php5.6 php7.0 php7.1 php7.2 php7.3 php7.4 php5.6-fpm php7.0-fpm php7.1-fpm php7.2-fpm php7.3-fpm php7.4-fpm \
+
+if [[ $EUID -ne 0 ]]; then
+   ok "This script must be run as root" 
+   exit 1
+fi
+apt update
+apt-get install -y software-properties-common curl gcc g++ make
+add-apt-repository ppa:ondrej/apache2 -y
+add-apt-repository ppa:ondrej/php -y
+apt install 
+curl -sL https://deb.nodesource.com/setup_12.x | -E bash -
+apt update
+apt-get install -y git filezilla cifs-utils unzip bind9 resolvconf openssh-server composer nodejs git build-essential libtool autoconf openssl mysql-server-5.7 apache2 libapache2-mpm-itk php-pear php5.6 php7.0 php7.1 php7.2 php7.3 php7.4 php5.6-fpm php7.0-fpm php7.1-fpm php7.2-fpm php7.3-fpm php7.4-fpm \
 php5.6-{curl,common,xml,bcmath,bz2,intl,gd,mbstring,mysql,zip,json} \
 php7.0-{curl,common,xml,bcmath,bz2,intl,gd,mbstring,mysql,zip,json} \
 php7.1-{curl,common,xml,bcmath,bz2,intl,gd,mbstring,mysql,zip,json} \
@@ -28,8 +33,8 @@ cat << EOT >  /etc/apache2/conf-available/php-fpm.conf
 </IfModule>
 EOT
 
-sudo a2enmod "proxy proxy_fcgi setenvif actions alias auth_basic env expires headers http2 mime ssl rewrite request mpm_itk"
-sudo a2enconf  "php-fpm php5.6-fpm php7.0-fpm php7.1-fpm  php7.2-fpm php7.3-fpm phpmyadmin"
+a2enmod "proxy proxy_fcgi setenvif actions alias auth_basic env expires headers http2 mime ssl rewrite request mpm_itk"
+a2enconf  "php-fpm php5.6-fpm php7.0-fpm php7.1-fpm  php7.2-fpm php7.3-fpm phpmyadmin"
 
 
 
@@ -41,7 +46,7 @@ ok "Database QD_TEST and user qualdev created with a password P@q2w3fg"
 #=============================================WORDPRESS=====================================================
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
-sudo mv wp-cli.phar '/usr/local/bin/wp'
+mv wp-cli.phar '/usr/local/bin/wp'
 
 #============================================================================================================
 cat << EOT >   /etc/bind/named.conf.local
@@ -92,7 +97,7 @@ EOT
 cat << EOT > /etc/resolvconf/resolv.conf.d/head
 nameserver 127.0.0.1
 EOT
-sudo service resolvconf restart
+service resolvconf restart
 #=======================================
 dig @127.0.0.1
 ok  "dig qualdev.in A"
@@ -125,8 +130,11 @@ AllowOverride ALL \
 Require all granted \
 </Directory>' /etc/apache2/apache2.conf
 mkdir -p /home/it/public_html/test.net/public
+mkdir -p /home/it/public_html/logs
 ok  "updating restarting PHP-FPM ALL VERSIONS"
-sudo service php5.6-fpm restart && sudo service php7.0-fpm restart && sudo service php7.1-fpm restart && sudo service php7.2-fpm restart && sudo service php7.3-fpm restart && sudo service php7.3-fpm restart && sudo service apache2 restart
+ok  "Enabling test vhost test.net"
+
+a2ensite test.net service php5.6-fpm restart && service php7.0-fpm restart && service php7.1-fpm restart && service php7.2-fpm restart && service php7.3-fpm restart && service php7.3-fpm restart && service apache2 restart
 ok  "Enabling SSH ON SERVER"
 sed -i 's/#   Port 22/Port 22/g' /etc/ssh/ssh_config
 
