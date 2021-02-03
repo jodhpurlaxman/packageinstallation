@@ -39,10 +39,10 @@ a2enconf  "php-fpm php5.6-fpm php7.0-fpm php7.1-fpm  php7.2-fpm php7.3-fpm phpmy
 
 
 #==================================*MySql User database*===========================================
-mysql -e "CREATE DATABASE IF NOT EXISTS QD_TEST; GRANT ALL PRIVILEGES ON *.* TO 'qualdev'@'localhost' IDENTIFIED BY 'P@q2w3efg'; FLUSH PRIVILEGES;"
+mysql -e "CREATE DATABASE IF NOT EXISTS QD_TEST; GRANT ALL PRIVILEGES ON *.* TO 'quallitydev'@'localhost' IDENTIFIED BY 'password'; FLUSH PRIVILEGES;"
 Q3="FLUSH PRIVILEGES;"
 
-ok "Database QD_TEST and user qualdev created with a password P@q2w3fg"
+ok "Database QD_TEST and user quallitydev created with a password password"
 #=============================================WORDPRESS=====================================================
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
@@ -50,14 +50,14 @@ mv wp-cli.phar '/usr/local/bin/wp'
 
 #============================================================================================================
 cat << EOT >   /etc/bind/named.conf.local
-zone "qualdev.in" {
+zone "quallitydev.in" {
         type master;
-        file "/etc/bind/zones/qualdev.in";
+        file "/etc/bind/zones/quallitydev.in";
         allow-update { none; };
  };
 zone "0.127.in-addr.arpa" {
         type master;
-        file "/etc/bind/zones/rev.qualdev.in";
+        file "/etc/bind/zones/rev.quallitydev.in";
         allow-update { none; };
  };
 EOT
@@ -77,14 +77,14 @@ EOT
 cat << EOT >> /etc/bind/named.conf.local
 zone "qualdev.in" {
         type master;
-        file "/etc/bind/zones/qualdev.in";
+        file "/etc/bind/zones/quallitydev.in";
         allow-update { none; };
  };
 EOT
 #============
 mkdir /etc/bind/zones
-#wget https://raw.githubusercontent.com/jodhpurlaxman/packageinstallation/master/qualdev.in
-#wget https://raw.githubusercontent.com/jodhpurlaxman/packageinstallation/master/rev.qualdev.in
+#wget https://raw.githubusercontent.com/jodhpurlaxman/packageinstallation/master/quallitydev.in
+#wget https://raw.githubusercontent.com/jodhpurlaxman/packageinstallation/master/rev.quallitydev.in
 mv qualdev.in /etc/bind/zones/qualdev.in
 mv rev.qualdev.in /etc/bind/zones/rev.qualdev.in
 mv test.net /etc/bind/zones/test.net
