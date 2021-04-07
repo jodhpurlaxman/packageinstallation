@@ -39,7 +39,7 @@ a2enconf  "php-fpm php5.6-fpm php7.0-fpm php7.1-fpm  php7.2-fpm php7.3-fpm phpmy
 
 
 #==================================*MySql User database*===========================================
-mysql -e "CREATE DATABASE IF NOT EXISTS QD_TEST; GRANT ALL PRIVILEGES ON *.* TO 'quallitydev'@'localhost' IDENTIFIED BY 'password'; FLUSH PRIVILEGES;"
+mysql -e "CREATE DATABASE IF NOT EXISTS QD_TEST; GRANT ALL PRIVILEGES ON *.* TO 'qualdev'@'localhost' IDENTIFIED BY 'P@q2w3efg'; FLUSH PRIVILEGES;"
 Q3="FLUSH PRIVILEGES;"
 
 ok "Database QD_TEST and user quallitydev created with a password password"
@@ -52,12 +52,12 @@ mv wp-cli.phar '/usr/local/bin/wp'
 cat << EOT >   /etc/bind/named.conf.local
 zone "quallitydev.in" {
         type master;
-        file "/etc/bind/zones/quallitydev.in";
+        file "/etc/bind/zones/qualdev.in";
         allow-update { none; };
  };
 zone "0.127.in-addr.arpa" {
         type master;
-        file "/etc/bind/zones/rev.quallitydev.in";
+        file "/etc/bind/zones/rev.qualdev.in";
         allow-update { none; };
  };
 EOT
@@ -77,7 +77,7 @@ EOT
 cat << EOT >> /etc/bind/named.conf.local
 zone "qualdev.in" {
         type master;
-        file "/etc/bind/zones/quallitydev.in";
+        file "/etc/bind/zones/qualdev.in";
         allow-update { none; };
  };
 EOT
